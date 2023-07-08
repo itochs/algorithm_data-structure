@@ -1,47 +1,17 @@
-pub struct UnionFind {
-    pub parent: Vec<usize>,
-    pub size: Vec<usize>,
-}
+pub mod unionfind_no_comp;
+pub mod unionfind_path_compression;
+pub trait UnionFindTrait {
+    fn new(n: usize) -> Self;
 
-impl UnionFind {
-    pub fn new(n: usize) -> Self {
-        return UnionFind {
-            parent: (0..n).collect(),
-            size: vec![1; n],
-        };
-    }
+    fn len(&self) -> usize;
     // xの親
-    pub fn root(&self, x: usize) -> usize {
-        if self.parent[x] == x {
-            return x;
-        }
-
-        return self.root(self.parent[x]);
-    }
+    fn root(&self, x: usize) -> usize;
 
     // uとvの結合
     // 値を変更するのでmutとしてselfを参照
-    pub fn unite(&mut self, u: usize, v: usize) -> bool {
-        let ru = self.root(u);
-        let rv = self.root(v);
-        if ru == rv {
-            return false;
-        }
-        // union by size
-        // ノード数が大きい方に，ノード数が小さい方を結合する
-        dbg!(self.size[ru] < self.size[rv]);
-        if self.size[ru] < self.size[rv] {
-            self.parent[ru] = v;
-            self.size[rv] += self.size[ru];
-        } else {
-            self.parent[rv] = ru;
-            self.size[ru] += self.size[rv];
-        }
+    fn unite(&mut self, u: usize, v: usize) -> bool;
 
-        return true;
-    }
-
-    pub fn same(&self, u: usize, v: usize) -> bool {
+    fn same(&self, u: usize, v: usize) -> bool {
         return self.root(u) == self.root(v);
     }
 }
