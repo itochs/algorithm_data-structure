@@ -22,17 +22,20 @@ impl UnionFind {
     // uとvの結合
     // 値を変更するのでmutとしてselfを参照
     pub fn unite(&mut self, u: usize, v: usize) -> bool {
-        if self.root(u) == self.root(v) {
+        let ru = self.root(u);
+        let rv = self.root(v);
+        if ru == rv {
             return false;
         }
         // union by size
         // ノード数が大きい方に，ノード数が小さい方を結合する
-        if self.size[u] < self.size[v] {
-            self.parent[u] = v;
-            self.size[v] += self.size[u];
+        dbg!(self.size[ru] < self.size[rv]);
+        if self.size[ru] < self.size[rv] {
+            self.parent[ru] = v;
+            self.size[rv] += self.size[ru];
         } else {
-            self.parent[v] = u;
-            self.size[u] += self.size[v];
+            self.parent[rv] = ru;
+            self.size[ru] += self.size[rv];
         }
 
         return true;
