@@ -1,10 +1,12 @@
 pub struct UnionFind {
     pub parent: Vec<usize>,
+    pub size: Vec<usize>,
 }
 impl UnionFind {
     fn new(n: usize) -> Self {
         return UnionFind {
             parent: (0..n).collect(),
+            size: vec![1; n],
         };
     }
     // xの親
@@ -23,8 +25,13 @@ impl UnionFind {
         if ru == rv {
             return false;
         }
-
-        self.parent[rv] = ru;
+        // union by size
+        // ノード数が大きい方に，ノード数が小さい方を結合する
+        if self.size[rv] < self.size[ru] {
+            self.parent[ru] = rv;
+        } else {
+            self.parent[rv] = ru;
+        }
 
         return true;
     }
