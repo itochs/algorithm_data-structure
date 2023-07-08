@@ -14,6 +14,7 @@ impl UnionFind {
         if self.parent[x] == x {
             return x;
         }
+
         return self.root(self.parent[x]);
     }
 
@@ -29,8 +30,10 @@ impl UnionFind {
         // ノード数が大きい方に，ノード数が小さい方を結合する
         if self.size[rv] < self.size[ru] {
             self.parent[ru] = rv;
+            self.size[ru] += self.size[rv];
         } else {
             self.parent[rv] = ru;
+            self.size[rv] += self.size[ru];
         }
 
         return true;
